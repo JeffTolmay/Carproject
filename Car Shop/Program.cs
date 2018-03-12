@@ -22,7 +22,7 @@ namespace Car_Shop
             StringBuilder Carbuild = new StringBuilder();
             Console.WriteLine("Welcome to Car Storage \r\nPlease enter the Car's details below:");
             float Commision = .05f;
-            List<string> carreader = new List<string>();
+            List<Car> carreader = new List<Car>();
             //Trying to get correct input from user
             try
             {   //Make input
@@ -79,19 +79,16 @@ namespace Car_Shop
                     //newcar.Cost = Console.ReadLine();
                 }
                 newcar.Comm = float.Parse(newcar.Cost);
-
                 CarInfo.Add(newcar.Cost);
                 string mytotalcost = string.Format("{0:C}", newcar.Comm);
                 Carbuild.Append(mytotalcost + ";");
                 Console.WriteLine("You entered: " + newcar.Cost + ".");
                 newcar.total = newcar.Comm * Commision;                 //Calculation
-                string mytotal = string.Format("{0:C}", newcar.total);
-                Carbuild.Append(mytotal + "\r\n");
-
+                newcar.FComm = string.Format("{0:C}", newcar.total);
+                Carbuild.Append(newcar.FComm + "\r\n");
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine("You have not entered the correct information please restart the program!!! ");
                 Carbuild.Clear(); // Empty stringbuilder if not all info is correct.
             }
@@ -100,34 +97,42 @@ namespace Car_Shop
             //Reading CSV to list.
             using (var SR = new StreamReader(filePath))
             {
-                while (SR.Peek() >= 0)
-                    carreader.Add(SR.ReadLine());
+                string[] obj;
+                string line;
+                while ((line = SR.ReadLine()) != null)
+                {
+                    obj = line.Split(';');
+                    Car secondCar = new Car();
+                    secondCar.Make = obj[0];
+                    secondCar.Model = obj[1];
+                    secondCar.Color = obj[2];
+                    secondCar.RegNo = obj[3];
+                    secondCar.Cost = obj[4];
+                    secondCar.FComm = obj[5];
+                    carreader.Add(secondCar);
+                }
             }
             string text = File.ReadAllText(filePath);
             Console.WriteLine(text);
-            Console.ReadLine();
-
+            
             using (var con = new SqlConnection(SQLhelper.CnnVal("Carsdb")))
             {
                 con.Open();
-                using (var cmd = new SqlCommand("insert into Car(Make, Model, Color, RegNo) Values(@Make, @Model, @Color, @RegNo)", con))
+                foreach (var obj in carreader)
                 {
-                    cmd.Parameters.Add("@Make", SqlDbType.VarChar);
-                    cmd.Parameters.Add("@Model", SqlDbType.VarChar);
-                    cmd.Parameters.Add("@Color", SqlDbType.VarChar);
-                    cmd.Parameters.Add("@RegNo", SqlDbType.VarChar);
-                    foreach (var obj in carreader)
+                    using (var cmd = new SqlCommand("If NOT EXISTS(select RegNo from Car where RegNo = @RegNo) insert into Car(Make, Model, Color, RegNo, Cost, Commission) Values(@Make, @Model, @Color, @RegNo, @Cost, @Commission) ", con))
                     {
-                        cmd.Parameters["@Make"].Value = obj;
+                        cmd.Parameters.Add("@Make", SqlDbType.VarChar).Value = obj.Make;
+                        cmd.Parameters.Add("@Model", SqlDbType.VarChar).Value = obj.Model;
+                        cmd.Parameters.Add("@Color", SqlDbType.VarChar).Value = obj.Color;
+                        cmd.Parameters.Add("@RegNo", SqlDbType.VarChar).Value = obj.RegNo;
+                        cmd.Parameters.Add("@Cost", SqlDbType.VarChar).Value = obj.Cost;
+                        cmd.Parameters.Add("@Commission", SqlDbType.VarChar).Value = obj.FComm;
                         var rowsAffected = cmd.ExecuteNonQuery();
                     }
                 }
-                
             }
-                
         }
-
-        
         private static bool CheckCost(Car newcar)
         {
             try

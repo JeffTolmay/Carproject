@@ -8,7 +8,6 @@ namespace Car_Shop
 {
     public class Car
     {
-        public int id { get; set; }
         public string Make { get; set; }
         public string Model { get; set; }
         public string Color { get; set; }
@@ -16,12 +15,6 @@ namespace Car_Shop
         public string Cost { get; set; }
         public float total { get; set; }
         public float Comm { get; set; }
-        public string Fullinfo
-        {
-            get
-            {
-                return $"{Make} {Model} {Color} {RegNo}";
-            }
-        }
+        public string FComm { get; set; }
     }
 }
