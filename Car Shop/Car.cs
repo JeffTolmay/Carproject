@@ -16,5 +16,25 @@ namespace Car_Shop
         public float total { get; set; }
         public float Comm { get; set; }
         public string FComm { get; set; }
+
+        public static bool CheckCost(Car newcar)
+        {
+            try
+            {
+                while (newcar.Cost == "" || newcar.Comm < 0)
+                {
+                    Console.WriteLine("Please enter the amount(Numeric Value): ");
+                    newcar.Cost = Console.ReadLine();
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
+    
 }

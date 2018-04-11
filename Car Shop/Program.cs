@@ -16,84 +16,88 @@ namespace Car_Shop
     {
         static void Main(string[] args)
         {   //Variables
-            List<string> CarInfo = new List<string>();
             string filePath = @"C:\Users\jtolmay\Desktop\Tester.csv";
-            Car newcar = new Car();
             StringBuilder Carbuild = new StringBuilder();
             Console.WriteLine("Welcome to Car Storage \r\nPlease enter the Car's details below:");
-            float Commision = .05f;
             List<Car> carreader = new List<Car>();
             //Trying to get correct input from user
-            try
-            {   //Make input
-                Console.WriteLine("Please enter your car's Make: ");
-                newcar.Make = Console.ReadLine();
-                while (newcar.Make == "")
-                {
-                    Console.WriteLine("Please enter your car's Make: ");
-                    newcar.Make = Console.ReadLine();
-                }
-                CarInfo.Add(newcar.Make);
-                Carbuild.Append(newcar.Make + ";");
-                Console.WriteLine("You entered: " + newcar.Make + ".");
-                //Model input
-                Console.WriteLine("Please enter you car's Model: ");
-                newcar.Model = Console.ReadLine();
-                while (newcar.Model == "")
-                {
-                    Console.WriteLine("Please enter you car's Model: ");
-                    newcar.Model = Console.ReadLine();
-                }
-                CarInfo.Add(newcar.Model);
-                Carbuild.Append(newcar.Model + ";");
-                Console.WriteLine("You entered: " + newcar.Model + ".");
-                //Color input
-                Console.WriteLine("Please enter your car's color: ");
-                newcar.Color = Console.ReadLine();
-                while (newcar.Color == "")
-                {
-                    Console.WriteLine("Please enter your car's color: ");
-                    newcar.Color = Console.ReadLine();
-                }
-                CarInfo.Add(newcar.Color);
-                Carbuild.Append(newcar.Color + ";");
-                Console.WriteLine("You entered: " + newcar.Color + ".");
-                //RegNo input
-                Console.WriteLine("Please enter your car's registration number: ");
-                newcar.RegNo = Console.ReadLine();
-                while (newcar.RegNo == "")
-                {
-                    Console.WriteLine("Please enter your car's registration number: ");
-                    newcar.RegNo = Console.ReadLine();
-                }
-                CarInfo.Add(newcar.RegNo);
-                Carbuild.Append(newcar.RegNo + ";");
-                Console.WriteLine("You entered: " + newcar.RegNo + ".");
-                //Amount input
-                Console.WriteLine("Please enter the amount(Numeric Value): ");
-                newcar.Cost = Console.ReadLine();
-                //making sure it is a integer
-                while ((!CheckCost(newcar)))
-                {
-                    //Console.WriteLine("Please enter the amount: ");
-                    //newcar.Cost = Console.ReadLine();
-                }
-                newcar.Comm = float.Parse(newcar.Cost);
-                CarInfo.Add(newcar.Cost);
-                string mytotalcost = string.Format("{0:C}", newcar.Comm);
-                Carbuild.Append(mytotalcost + ";");
-                Console.WriteLine("You entered: " + newcar.Cost + ".");
-                newcar.total = newcar.Comm * Commision;                 //Calculation
-                newcar.FComm = string.Format("{0:C}", newcar.total);
-                Carbuild.Append(newcar.FComm + "\r\n");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("You have not entered the correct information please restart the program!!! ");
-                Carbuild.Clear(); // Empty stringbuilder if not all info is correct.
-            }
-            //Writing to CSV file
-            File.AppendAllText(filePath, Carbuild.ToString());
+            //try
+            //{   //Make input
+            //    List<string> CarInfo = new List<string>();
+            //    Car newcar = new Car();
+            //    Console.WriteLine("Please enter your car's Make: ");
+            //    newcar.Make = Console.ReadLine();
+            //    while (newcar.Make == "")
+            //    {
+            //        Console.WriteLine("Please enter your car's Make: ");
+            //        newcar.Make = Console.ReadLine();
+            //    }
+            //    CarInfo.Add(newcar.Make);
+            //    Carbuild.Append(newcar.Make + ";");
+            //    Console.WriteLine("You entered: " + newcar.Make + ".");
+            //    //Model input
+            //    Console.WriteLine("Please enter you car's Model: ");
+            //    newcar.Model = Console.ReadLine();
+            //    while (newcar.Model == "")
+            //    {
+            //        Console.WriteLine("Please enter you car's Model: ");
+            //        newcar.Model = Console.ReadLine();
+            //    }
+            //    CarInfo.Add(newcar.Model);
+            //    Carbuild.Append(newcar.Model + ";");
+            //    Console.WriteLine("You entered: " + newcar.Model + ".");
+            //    //Color input
+            //    Console.WriteLine("Please enter your car's color: ");
+            //    newcar.Color = Console.ReadLine();
+            //    while (newcar.Color == "")
+            //    {
+            //        Console.WriteLine("Please enter your car's color: ");
+            //        newcar.Color = Console.ReadLine();
+            //    }
+            //    CarInfo.Add(newcar.Color);
+            //    Carbuild.Append(newcar.Color + ";");
+            //    Console.WriteLine("You entered: " + newcar.Color + ".");
+            //    //RegNo input
+            //    Console.WriteLine("Please enter your car's registration number: ");
+            //    newcar.RegNo = Console.ReadLine();
+            //    while (newcar.RegNo == "")
+            //    {
+            //        Console.WriteLine("Please enter the car's unique registration number: ");
+            //        newcar.RegNo = Console.ReadLine();
+            //    }
+            //    CarInfo.Add(newcar.RegNo);
+            //    Carbuild.Append(newcar.RegNo + ";");
+            //    Console.WriteLine("You entered: " + newcar.RegNo + ".");
+            //    //Amount input
+            //    Console.WriteLine("Please enter the amount(Numeric Value): ");
+            //    newcar.Cost = Console.ReadLine();
+            //    //making sure it is a integer
+            //    while ((!Car.CheckCost(newcar)))
+            //    {
+            //    }
+            //    float Comm;
+            //    while (!float.TryParse(newcar.Cost, out Comm))
+            //    {
+            //        Console.WriteLine("Please enter just a numeric value: ");
+            //        newcar.Cost = Console.ReadLine();
+            //    }
+            //        newcar.Comm = float.Parse(newcar.Cost);
+            //        float Commision = .05f;
+            //        CarInfo.Add(newcar.Cost);
+            //        string mytotalcost = string.Format("{0:C}", newcar.Comm);
+            //        Carbuild.Append(mytotalcost + ";");
+            //        Console.WriteLine("You entered: " + newcar.Cost + ".");
+            //        newcar.total = newcar.Comm * Commision;                 //Calculation
+            //        newcar.FComm = string.Format("{0:C}", newcar.total);
+            //        Carbuild.Append(newcar.FComm + "\r\n");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("You have not entered the correct information please restart the program!!! ");
+            //    Carbuild.Clear(); // Empty stringbuilder if not all info is correct.
+            //}
+            ////Writing to CSV file
+            //File.AppendAllText(filePath, Carbuild.ToString());
             //Reading CSV to list.
             using (var SR = new StreamReader(filePath))
             {
@@ -112,9 +116,9 @@ namespace Car_Shop
                     carreader.Add(secondCar);
                 }
             }
-            string text = File.ReadAllText(filePath);
-            Console.WriteLine(text);
-            
+            //string text = File.ReadAllText(filePath);
+            //Console.WriteLine(text);
+
             using (var con = new SqlConnection(SQLhelper.CnnVal("Carsdb")))
             {
                 con.Open();
@@ -133,23 +137,5 @@ namespace Car_Shop
                 }
             }
         }
-        private static bool CheckCost(Car newcar)
-        {
-            try
-            {
-                while (newcar.Cost == "" || newcar.Comm < 0)
-                {
-                    Console.WriteLine("Please enter the amount(Numeric Value): ");
-                    newcar.Cost = Console.ReadLine();
-                    return false;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-            return true;
-        }
-
     }
 }
